@@ -1,0 +1,13 @@
+package: github.com/mwek/iblameyou
+owners:
+- name: Maciek Weksej
+  email: maciek.weksej@gmail.com
+import:
+- package: github.com/atotto/clipboard
+- package: github.com/gizak/termui
+- package: github.com/maruel/panicparse
+  version: 8dc9456d2035bf06f83bb22867104e2486cc7ed4
+  subpackages:
+  - stack
+- package: github.com/toqueteos/webbrowser
+- package: gopkg.in/yaml.v2

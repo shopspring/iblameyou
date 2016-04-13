@@ -1,0 +1,22 @@
+hash: 19d338ed4880c38208b17f879ec0e9278b451af40768249a8c0460d5c810514c
+updated: 2016-07-19T17:42:26.282187399+02:00
+imports:
+- name: github.com/atotto/clipboard
+  version: bb272b845f1112e10117e3e45ce39f690c0001ad
+- name: github.com/gizak/termui
+  version: 202925a536c7febe22698792a2b6de68edb2726d
+- name: github.com/maruel/panicparse
+  version: 8dc9456d2035bf06f83bb22867104e2486cc7ed4
+  subpackages:
+  - stack
+- name: github.com/mattn/go-runewidth
+  version: d6bea18f789704b5f83375793155289da36a3c7f
+- name: github.com/mitchellh/go-wordwrap
+  version: ad45545899c7b13c020ea92b2072220eefad42b8
+- name: github.com/nsf/termbox-go
+  version: 0723e7c3d0a317dea811f0fbe4d6edd81908c971
+- name: github.com/toqueteos/webbrowser
+  version: 21fc9f95c83442fd164094666f7cb4f9fdd56cd6
+- name: gopkg.in/yaml.v2
+  version: e4d366fc3c7938e2958e662b4258c7a89e1f0e3e
+devImports: []

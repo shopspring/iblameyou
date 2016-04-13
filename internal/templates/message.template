@@ -1,0 +1,7 @@
+{{template "CustomMessage" .V}}
+Full dump:
+```
+{{.Format.StacktraceForMessage .V.Dump}}
+```
+
+Generated with github.com/mwek/iblameyou

@@ -1,0 +1,6 @@
+Date: {{.V.Date.Format "2006-01-02 15:04:05"}}
+ID: {{.V.ID}}
+Author: {{.V.Author}}
+E-mail: {{.V.Email}}
+
+{{.V.Message}}
