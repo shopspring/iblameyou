@@ -1,7 +1,13 @@
-{{template "CustomMessage" .V}}
-Full dump:
+Hey **{{.V.Commit.Author}}**,
+
+your commit {{printf "%.6s" .V.Commit.ID}} is selected as a potential root cause for a following error:
 ```
 {{.Format.StacktraceForMessage .V.Dump}}
 ```
 
-Generated with github.com/mwek/iblameyou
+Commit details:
+> {{replace .V.Commit.FullMessage "\n" "\n> "}}
+
+Commited at {{.V.Commit.Date.Format "2006-01-02 15:04:05"}}
+
+Message generated with github.com/mwek/iblameyou

@@ -81,11 +81,14 @@ func (f *Format) Init() error {
 	if err != nil {
 		return err
 	}
-	f.templates.Message, err = message.Clone()
-	if err != nil {
-		return err
+	if f.CustomMessage == "" {
+		f.templates.Message, err = message.Clone()
+	} else {
+		f.templates.Message, err =
+			template.New("CustomMessage").
+				Funcs(messageFuncs).
+				Parse(f.CustomMessage)
 	}
-	_, err = f.templates.Message.New("CustomMessage").Parse(f.CustomMessage)
 	return err
 }
 
@@ -271,6 +274,12 @@ func (f *Format) Message(c Candidate) string {
 var (
 	commit = template.Must(template.New("commit").Parse(
 		_escFSMustString(false, "/templates/commit.template")))
-	message = template.Must(template.New("message").Parse(
-		_escFSMustString(false, "/templates/message.template")))
+	message = template.Must(template.New("message").
+		Funcs(messageFuncs).
+		Parse(_escFSMustString(false, "/templates/message.template")))
+	messageFuncs = template.FuncMap{
+		"replace": func(s, old, new string) string {
+			return strings.Replace(s, old, new, -1)
+		},
+	}
 )

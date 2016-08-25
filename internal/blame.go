@@ -13,10 +13,11 @@ import (
 )
 
 type Commit struct {
-	ID      string
-	Author  string
-	Email   string
-	Message string
+	ID          string
+	Author      string
+	Email       string
+	Message     string
+	FullMessage string
 
 	// Date is the date when this commit was originally made. (It may
 	// differ from the commit date, which is changed during rebases, etc.)
@@ -108,5 +109,15 @@ func Blame(repo, file string, line int) (Commit, error) {
 		Email:   email,
 		Date:    time.Unix(date, 0),
 	}
+
+	// Get the full message
+	cmd = exec.Command("git", "show", "-s", "--format=%B", commit.ID)
+	cmd.Dir = repo
+	cmd.Stderr = ioutil.Discard
+	out, err = cmd.Output()
+	if err == nil {
+		commit.FullMessage = strings.TrimSpace(string(out))
+	}
+
 	return commit, nil
 }
