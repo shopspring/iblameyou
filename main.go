@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -12,9 +13,14 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var config = flag.String("config",
-	os.Getenv("HOME")+"/.iblameyou.yaml",
-	"path to configuration file")
+const v = "0.1"
+
+var (
+	version = flag.Bool("version", false, "print version and exit")
+	config  = flag.String("config",
+		os.Getenv("HOME")+"/.iblameyou.yaml",
+		"path to configuration file")
+)
 
 type Config struct {
 	Format internal.Format
@@ -33,6 +39,11 @@ func DefaultConfig() (c Config) {
 
 func main() {
 	flag.Parse()
+
+	if *version {
+		fmt.Println(v)
+		os.Exit(0)
+	}
 
 	cfg := DefaultConfig()
 	if b, err := ioutil.ReadFile(*config); err == nil {
