@@ -13,7 +13,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-const v = "0.1"
+const v = "0.1.1"
 
 var (
 	version = flag.Bool("version", false, "print version and exit")

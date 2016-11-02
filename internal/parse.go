@@ -11,16 +11,17 @@ import (
 )
 
 type Dump struct {
-	Head    string
-	Buckets stack.Buckets
-	Commits Commits
-	Skipped string
+	Revision string
+	Buckets  stack.Buckets
+	Commits  Commits
+	Skipped  string
 
 	source *Source
 }
 
 type Source struct {
-	Repository string
+	Repository string `yaml:"repository,omitempty"`
+	Revision   string `yaml:"revision,omitempty"`
 }
 
 func (s *Source) ParseDump(message io.Reader) (Dump, error) {
@@ -30,25 +31,28 @@ func (s *Source) ParseDump(message io.Reader) (Dump, error) {
 		return Dump{}, err
 	}
 
-	cmd := exec.Command("git", "rev-parse", "HEAD")
+	if s.Revision == "" {
+		s.Revision = "HEAD"
+	}
+	cmd := exec.Command("git", "rev-parse", s.Revision)
 	cmd.Dir = s.Repository
 	cmd.Stderr = ioutil.Discard
-	head, err := cmd.Output()
+	revision, err := cmd.Output()
 	if err != nil {
-		head = nil
+		revision = []byte("HEAD")
 	}
 
 	dump := Dump{
-		Head:    strings.TrimSpace(string(head)),
-		Buckets: stack.SortBuckets(stack.Bucketize(routines, stack.AnyPointer)),
-		Commits: DefaultCommits(),
-		Skipped: skip.String(),
-		source:  s,
+		Revision: strings.TrimSpace(string(revision)),
+		Buckets:  stack.SortBuckets(stack.Bucketize(routines, stack.AnyPointer)),
+		Commits:  DefaultCommits(),
+		Skipped:  skip.String(),
+		source:   s,
 	}
 
 	for _, b := range dump.Buckets {
 		for _, c := range b.Stack.Calls {
-			cm, err := Blame(s.Repository, c.SourcePath, c.Line)
+			cm, err := Blame(s.Repository, c.SourcePath, c.Line, dump.Revision)
 			if err == nil {
 				dump.Commits.Add(c.FullSourceLine(), cm)
 			}

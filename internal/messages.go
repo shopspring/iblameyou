@@ -239,7 +239,7 @@ func (f *Format) Stacktrace(d Dump) ([]string, []SourcePath) {
 		lines = append(lines, f.BucketHeader(&bucket, len(d.Buckets) > 1))
 		files = append(files, SourcePath{})
 		stackLines, stackFiles :=
-			f.StackLines(d.Head, &bucket.Signature, &d.Commits, srcLen)
+			f.StackLines(d.Revision, &bucket.Signature, &d.Commits, srcLen)
 		lines = append(lines, stackLines...)
 		files = append(files, stackFiles...)
 	}

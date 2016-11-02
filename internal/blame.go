@@ -61,9 +61,10 @@ func (c byDate) Less(i, j int) bool { return c[i].Date.After(c[j].Date) }
 // Blame returns the commit information about the person that committed the
 // single line in given file in given repository.
 // Heavily influenced by https://github.com/sourcegraph/go-blame/
-func Blame(repo, file string, line int) (Commit, error) {
+func Blame(repo, file string, line int, revision string) (Commit, error) {
 	lineOpt := fmt.Sprintf("-L%[1]d,%[1]d", line)
-	cmd := exec.Command("git", "blame", "-w", "--porcelain", lineOpt, "--", file)
+	cmd := exec.Command("git", "blame", "-w", "--porcelain", lineOpt, revision,
+		"--", file)
 	cmd.Dir = repo
 	cmd.Stderr = ioutil.Discard
 	out, err := cmd.Output()
