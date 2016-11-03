@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -56,15 +57,21 @@ func main() {
 		log.Fatal("Repository not provided and not in a Git repository.")
 	}
 
+	log.Println("Reading message from stdin...")
+	message, err := ioutil.ReadAll(os.Stdin)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	ui := internal.UI{}
-	err := ui.Init(&cfg.Format)
+	err = ui.Init(&cfg.Format)
 	if err != nil {
 		log.Fatalf("Failed to initialize the UI:\n%s", err)
 	}
 	defer ui.Close()
 
 	go func() {
-		dump, err := cfg.Source.ParseDump(os.Stdin)
+		dump, err := cfg.Source.ParseDump(bytes.NewReader(message))
 		if err != nil {
 			log.Fatalf("Failed to parse dump:\n%s", err)
 		}

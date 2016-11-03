@@ -42,7 +42,7 @@ func (ui *UI) Init(f *Format) error {
 	// Messages
 	ui.messages.status = &widgets.Message{Ticks: 5}
 	ui.messages.usage = &widgets.Message{
-		Content: "[m]essage | [f]ile | [c]ommit | [b]lame | j/k scroll",
+		Content: "[m]essage | [f]ile | [c]ommit | [b]lame | j/k scroll | [q]uit",
 		Ticks:   -1}
 
 	// Widgets
