@@ -61,13 +61,13 @@ func (s *Source) ParseDump(message io.Reader) (Dump, error) {
 	for _, b := range dump.Buckets {
 		for _, c := range b.Stack.Calls {
 			wg.Add(1)
-			go func() {
+			go func(c stack.Call) {
 				defer wg.Done()
 				cm, err := Blame(s.Repository, c.SourcePath, c.Line, dump.Revision)
 				if err == nil {
 					commits <- result{c.FullSourceLine(), cm}
 				}
-			}()
+			}(c)
 		}
 	}
 
