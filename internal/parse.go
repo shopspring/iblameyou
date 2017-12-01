@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os/exec"
 	"strings"
+	"sync"
 
 	"github.com/maruel/panicparse/stack"
 )
@@ -50,13 +51,33 @@ func (s *Source) ParseDump(message io.Reader) (Dump, error) {
 		source:   s,
 	}
 
+	wg := sync.WaitGroup{}
+	type result struct {
+		source string
+		cm     Commit
+	}
+	commits := make(chan result)
+
 	for _, b := range dump.Buckets {
 		for _, c := range b.Stack.Calls {
-			cm, err := Blame(s.Repository, c.SourcePath, c.Line, dump.Revision)
-			if err == nil {
-				dump.Commits.Add(c.FullSourceLine(), cm)
-			}
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				cm, err := Blame(s.Repository, c.SourcePath, c.Line, dump.Revision)
+				if err == nil {
+					commits <- result{c.FullSourceLine(), cm}
+				}
+			}()
 		}
+	}
+
+	go func() {
+		wg.Wait()
+		close(commits)
+	}()
+
+	for r := range commits {
+		dump.Commits.Add(r.source, r.cm)
 	}
 	dump.Commits.SortByDate()
 	return dump, nil
