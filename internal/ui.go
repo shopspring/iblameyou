@@ -6,7 +6,7 @@ import (
 
 	"github.com/atotto/clipboard"
 	"github.com/gizak/termui"
-	"github.com/mwek/iblameyou/widgets"
+	"github.com/shopspring/iblameyou/widgets"
 	"github.com/toqueteos/webbrowser"
 )
 

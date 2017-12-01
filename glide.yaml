@@ -1,4 +1,4 @@
-package: github.com/mwek/iblameyou
+package: github.com/shopspring/iblameyou
 owners:
 - name: Maciek Weksej
   email: maciek.weksej@gmail.com

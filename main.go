@@ -10,7 +10,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/mwek/iblameyou/internal"
+	"github.com/shopspring/iblameyou/internal"
 	"gopkg.in/yaml.v2"
 )
 
